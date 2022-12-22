@@ -13,8 +13,8 @@ namespace projeto1.Data
             const string strConn = "Server=(local); Database=C002; Encrypt=True; Integrated Security=True; Trust Server Certificate=true; pooling=true; MultipleActiveResultSets=True";
             optionsBuilder
                 .UseSqlServer(strConn)
-                .EnableSensitiveDataLogging()
-                .LogTo(Console.WriteLine, LogLevel.Information);
+                .EnableSensitiveDataLogging();
+            // .LogTo(Console.WriteLine, LogLevel.Information);
         }
     }
 }
