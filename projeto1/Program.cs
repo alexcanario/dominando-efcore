@@ -88,4 +88,28 @@ class Program
 
         Console.WriteLine(msg);
     }
+
+    static void ExecuteSql()
+    {
+        using var db = new ApplicationContext();
+
+        //Primeira opcao
+        using (var cmd = db.Database.GetDbConnection().CreateCommand())
+        {
+            cmd.CommandText = "SELECT 1";
+            cmd.ExecuteNonQuery();
+        }
+
+        //Segunda opcao
+        var descricao = "teste";
+        // db.Database.ExecuteSqlRaw("update departamentos set descricao = 'teste' where id = 1");
+        //Opcao mais seguro, nao permite sql injection
+        //Transforma o parametro em dbparameter
+        db.Database.ExecuteSqlRaw("update departamentos set descricao = {0} where id = 1", descricao);
+
+        //Terceira opcao
+        //Transforma o parametro em dbparameter
+        db.Database.ExecuteSqlInterpolated($"update departamentos set descricao = {descricao} where id = 1");
+
+    }
 }
