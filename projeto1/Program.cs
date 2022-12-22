@@ -10,9 +10,12 @@ class Program
         // Console.WriteLine("Hello, World!");
 
         // EnsureCreatedAndDeleted();
+
         // GapDoEnsureCreated();
 
-        FixGapEnsureCreated();
+        // FixGapEnsureCreated();
+
+        HealthCheckDatabase();
     }
 
     static void EnsureCreatedAndDeleted()
@@ -42,5 +45,14 @@ class Program
 
         var databaseCreator = db2.GetService<IRelationalDatabaseCreator>();
         databaseCreator.CreateTables();
+    }
+
+    static void HealthCheckDatabase()
+    {
+        using var db = new ApplicationContext();
+        var canConnect = db.Database.CanConnect();
+
+        var msg = canConnect ? "Posso me conectar!" : "Não posso me conectar";
+        Console.WriteLine(msg);
     }
 }
