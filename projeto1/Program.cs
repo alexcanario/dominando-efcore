@@ -33,7 +33,9 @@ class Program
 
         // AplicarMigracaoEmTempoDeExecucao();
 
-        TodasMigracoes();
+        // TodasMigracoes();
+
+        MigracoesJaAplicadas();
 
 
 
@@ -187,6 +189,18 @@ class Program
         }
     }
 
+    static void MigracoesJaAplicadas()
+    {
+        using var db = new ApplicationContext();
 
+        var migracoes = db.Database.GetAppliedMigrations();
+
+        Console.WriteLine($"Total de migracoes aplicadas: {migracoes.Count()}");
+
+        foreach (var migracao in migracoes)
+        {
+            Console.WriteLine($"Migracao aplicada: {migracao}");
+        }
+    }
 
 }
