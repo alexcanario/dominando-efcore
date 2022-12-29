@@ -31,7 +31,9 @@ class Program
 
         // MigracoesPendentes();
 
-        AplicarMigracaoEmTempoDeExecucao();
+        // AplicarMigracaoEmTempoDeExecucao();
+
+        TodasMigracoes();
 
 
 
@@ -171,7 +173,19 @@ class Program
         db.Database.Migrate();
     }
 
+    static void TodasMigracoes()
+    {
+        using var db = new ApplicationContext();
 
+        var migracoes = db.Database.GetMigrations();
+
+        Console.WriteLine($"Total: {migracoes.Count()}");
+
+        foreach (var migracao in migracoes)
+        {
+            Console.WriteLine($"Migracao: {migracao}");
+        }
+    }
 
 
 
