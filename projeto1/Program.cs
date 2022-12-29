@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using projeto1.Data;
+using projeto1.Domain;
 
 namespace DominandoEFCore;
 class Program
@@ -20,11 +21,15 @@ class Program
 
         //Aquecer os dados
         // new ApplicationContext().Departamentos?.AsNoTracking().Any();
-        _count = 0;
-        GerenciarEstadoDaConexao(false);
+        // _count = 0;
+        // GerenciarEstadoDaConexao(false);
 
-        _count = 0;
-        GerenciarEstadoDaConexao(true);
+        // _count = 0;
+        // GerenciarEstadoDaConexao(true);
+
+        // SqlInjection();
+
+        MigracoesPendentes();
     }
 
     static void EnsureCreatedAndDeleted()
@@ -112,4 +117,46 @@ class Program
         db.Database.ExecuteSqlInterpolated($"update departamentos set descricao = {descricao} where id = 1");
 
     }
+
+    static void SqlInjection()
+    {
+        using var db = new ApplicationContext();
+
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
+
+        var listaDepartamentos = new List<Departamento> { new Departamento("Departamento 1"), new Departamento("Departamento 2") };
+        db.Departamentos?.AddRange(listaDepartamentos);
+        db.SaveChanges();
+
+
+        //Forma correta
+        // var descricaoAntiga = "Departamento 1";
+        // db.Database.ExecuteSqlRaw("update departamentos set descricao = 'Descricao 1 alterado' where descricao = {0}", descricaoAntiga);
+
+        //Forma incorreta
+        var filtro = "teste ' or 1='1";
+        db.Database.ExecuteSqlRaw($"update departamentos set descricao = 'Descricao haqueado sql injection' where descricao = '{filtro}'");
+
+        if (db.Departamentos == null) return;
+        foreach (var dep in db.Departamentos.AsNoTracking())
+        {
+            Console.WriteLine($"Id: {dep.Id}, Departamento: {dep.Descricao}");
+        }
+    }
+
+    static void MigracoesPendentes()
+    {
+        using var db = new ApplicationContext();
+
+        var migracoesPendentes = db.Database.GetPendingMigrations();
+
+        Console.WriteLine($"Total: {migracoesPendentes.Count()}");
+
+        foreach (var migracao in migracoesPendentes)
+        {
+            Console.WriteLine($"Migracao: {migracao}");
+        }
+    }
+
 }

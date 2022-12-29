@@ -66,3 +66,8 @@ C:\labs\Cursos\DominandoEFCore\projeto1\obj\Debug\net7.0\refint\DominandoEFCore.
 C:\labs\Cursos\DominandoEFCore\projeto1\obj\Debug\net7.0\DominandoEFCore.pdb
 C:\labs\Cursos\DominandoEFCore\projeto1\obj\Debug\net7.0\DominandoEFCore.genruntimeconfig.cache
 C:\labs\Cursos\DominandoEFCore\projeto1\obj\Debug\net7.0\ref\DominandoEFCore.dll
+C:\labs\Cursos\DominandoEFCore\projeto1\bin\Debug\net7.0\Humanizer.dll
+C:\labs\Cursos\DominandoEFCore\projeto1\bin\Debug\net7.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\labs\Cursos\DominandoEFCore\projeto1\bin\Debug\net7.0\Microsoft.Extensions.DependencyModel.dll
+C:\labs\Cursos\DominandoEFCore\projeto1\bin\Debug\net7.0\Mono.TextTemplating.dll
+C:\labs\Cursos\DominandoEFCore\projeto1\bin\Debug\net7.0\System.CodeDom.dll
