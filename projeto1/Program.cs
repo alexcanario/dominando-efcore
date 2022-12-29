@@ -29,7 +29,12 @@ class Program
 
         // SqlInjection();
 
-        MigracoesPendentes();
+        // MigracoesPendentes();
+
+        AplicarMigracaoEmTempoDeExecucao();
+
+
+
     }
 
     static void EnsureCreatedAndDeleted()
@@ -158,5 +163,16 @@ class Program
             Console.WriteLine($"Migracao: {migracao}");
         }
     }
+
+    static void AplicarMigracaoEmTempoDeExecucao()
+    {
+        using var db = new ApplicationContext();
+
+        db.Database.Migrate();
+    }
+
+
+
+
 
 }
