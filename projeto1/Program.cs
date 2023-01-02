@@ -35,8 +35,15 @@ class Program
 
         // TodasMigracoes();
 
-        MigracoesJaAplicadas();
+        // MigracoesJaAplicadas();
 
+        // GerarScriptDoBanco();
+
+        // CarregamentoAdiantado();
+
+        // CarregamentoExplicito();
+
+        CarregamentoLento();
 
 
     }
@@ -202,5 +209,130 @@ class Program
             Console.WriteLine($"Migracao aplicada: {migracao}");
         }
     }
+
+    static void GerarScriptDoBanco()
+    {
+        using var db = new ApplicationContext();
+        var script = db.Database.GenerateCreateScript();
+
+        Console.WriteLine(script);
+    }
+
+    static void CarregamentoAdiantado()
+    {
+        using var db = new ApplicationContext();
+        PopularTabelas(db);
+
+        var departamentos = db.Departamentos?.Include(d => d.Funcionarios);
+        if (!departamentos.Any())
+        {
+            Console.WriteLine($"Sem departamentos para exibir!");
+            return;
+        }
+
+        foreach (var dep in departamentos)
+        {
+            Console.WriteLine("--------------------------------------------------");
+            Console.WriteLine($"Departamento: {dep.Descricao}");
+
+            if (dep.Funcionarios?.Any() ?? false)
+            {
+                foreach (var func in dep.Funcionarios)
+                {
+                    Console.WriteLine($"\tFuncionario: {func.Nome}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"\tNenhum funcionário encontrado.");
+            }
+        }
+    }
+
+    static void CarregamentoExplicito()
+    {
+        using var db = new ApplicationContext();
+        PopularTabelas(db);
+
+        var departamentos = db.Departamentos;
+
+        foreach (var dep in departamentos)
+        {
+            if (dep.Id == 2)
+            {
+                // db.Entry(dep).Collection(d => d.Funcionarios).Load();
+                db.Entry(dep).Collection(d => d.Funcionarios).Query().Where(d => d.Id > 2).ToList();
+            }
+
+            Console.WriteLine("--------------------------------------------------");
+            Console.WriteLine($"Departamento: {dep.Descricao}");
+
+            if (dep.Funcionarios?.Any() ?? false)
+            {
+                foreach (var func in dep.Funcionarios)
+                {
+                    Console.WriteLine($"\tFuncionario: {func.Nome}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"\tNenhum funcionário encontrado.");
+            }
+        }
+    }
+
+    static void CarregamentoLento()
+    {
+        using var db = new ApplicationContext();
+        PopularTabelas(db);
+
+        var departamentos = db.Departamentos.ToList();
+
+        // db.ChangeTracker.LazyLoadingEnabled = false;
+
+
+        foreach (var dep in departamentos)
+        {
+            Console.WriteLine("--------------------------------------------------");
+            Console.WriteLine($"Departamento: {dep.Descricao}");
+
+            if (dep.Funcionarios?.Any() ?? false)
+            {
+                foreach (var func in dep.Funcionarios)
+                {
+                    Console.WriteLine($"\tFuncionario: {func.Nome}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"\tNenhum funcionário encontrado.");
+            }
+        }
+    }
+
+    static void PopularTabelas(ApplicationContext db)
+    {
+        if (!db.Departamentos.Any())
+        {
+            db.Departamentos.AddRange(
+                new Departamento { Descricao = "Departamento 01", Funcionarios = new List<Funcionario> { new Funcionario("Alex Canario", "111.222.333.44", 1) } },
+                new Departamento
+                {
+                    Descricao = "Departamento 02",
+                    Funcionarios = new List<Funcionario> {
+                        new Funcionario("Nanda Canario", "222.333.444.55", 2),
+                        new Funcionario("Kaique Canario", "333.444.555.66", 3),
+                        new Funcionario("Breno Canario", "444.555.666.77", 4),
+                        new Funcionario("Bruna Canario", "555.666.777.88", 4),
+                    }
+                }
+            );
+
+            db.SaveChanges();
+            db.ChangeTracker.Clear();
+        }
+    }
+
+
 
 }
