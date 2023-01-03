@@ -11,12 +11,10 @@ namespace projeto1.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // const string strConn = "Server=(local); Database=C002; Encrypt=True; Integrated Security=True; Trust Server Certificate=true; pooling=false; MultipleActiveResultSets=True";
-
-            const string strConn = "Server=(local); Database=C002; Encrypt=True; Integrated Security=True; Trust Server Certificate=true; pooling=true; MultipleActiveResultSets=True";
+            const string strConn = "Server=(local); Database=C003; Encrypt=True; Integrated Security=True; Trust Server Certificate=true; pooling=true; MultipleActiveResultSets=True";
             optionsBuilder
                 .UseSqlServer(strConn)
-                // .UseLazyLoadingProxies()
+                .EnableSensitiveDataLogging()
                 .LogTo(Console.WriteLine, LogLevel.Information);
         }
     }
