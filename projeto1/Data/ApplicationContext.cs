@@ -17,5 +17,12 @@ namespace projeto1.Data
                 .EnableSensitiveDataLogging()
                 .LogTo(Console.WriteLine, LogLevel.Information);
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //Filtro Global
+            modelBuilder.Entity<Departamento>().HasQueryFilter(d => !d.Excluido);
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

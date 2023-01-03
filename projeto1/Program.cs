@@ -6,7 +6,10 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        // Console.WriteLine("Hello, World!");
+
+        FiltroLocal();
+
     }
 
     static void Setup(ApplicationContext db)
@@ -34,4 +37,26 @@ class Program
             db.ChangeTracker.Clear();
         }
     }
+
+    static void FiltroLocal()
+    {
+        using var db = new ApplicationContext();
+        Setup(db);
+
+        // var departamentos = db.Departamentos?.Where(d => d.Id > 0 && !d.Excluido).ToList();
+        var departamentos = db.Departamentos?.ToList();
+
+        if (departamentos == null)
+        {
+            Console.WriteLine("Não existem departamentos:");
+            return;
+        }
+
+        foreach (var dep in departamentos)
+        {
+            Console.WriteLine($"Descricao: {dep.Descricao}");
+        }
+    }
+
+
 }
