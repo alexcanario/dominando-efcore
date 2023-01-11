@@ -1,4 +1,5 @@
-﻿using projeto1.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using projeto1.Data;
 using projeto1.Domain;
 
 namespace DominandoEFCore;
@@ -8,7 +9,11 @@ class Program
     {
         // Console.WriteLine("Hello, World!");
 
-        FiltroLocal();
+        // FiltroLocal();
+
+        // IgnoreFiltroGlobal();
+
+        ConsultaProjetada();
 
     }
 
@@ -43,8 +48,8 @@ class Program
         using var db = new ApplicationContext();
         Setup(db);
 
-        // var departamentos = db.Departamentos?.Where(d => d.Id > 0 && !d.Excluido).ToList();
-        var departamentos = db.Departamentos?.ToList();
+        var departamentos = db.Departamentos?.Where(d => d.Id > 0 && !d.Excluido).ToList();
+        // var departamentos = db.Departamentos?.ToList();
 
         if (departamentos == null)
         {
@@ -58,5 +63,48 @@ class Program
         }
     }
 
+    static void IgnoreFiltroGlobal()
+    {
+        using var db = new ApplicationContext();
+        Setup(db);
 
+        var departamentos = db.Departamentos?.IgnoreQueryFilters().Where(d => d.Id > 0).ToList();
+
+        if (departamentos == null)
+        {
+            Console.WriteLine("Não existem departamentos:");
+            return;
+        }
+
+        foreach (var dep in departamentos)
+        {
+            Console.WriteLine($"Descricao: {dep.Descricao}");
+        }
+    }
+
+    static void ConsultaProjetada()
+    {
+        using var db = new ApplicationContext();
+        Setup(db);
+
+        var departamentos = db.Departamentos?
+        .Where(d => d.Id > 0)
+        .Select(d => new { d.Descricao, Funcionarios = d.Funcionarios.Select(f => f.Nome) })
+        .ToList();
+
+        if (departamentos == null)
+        {
+            Console.WriteLine("Não existem departamentos:");
+            return;
+        }
+
+        foreach (var dep in departamentos)
+        {
+            Console.WriteLine($"Descricao: {dep.Descricao}");
+            foreach (var func in dep.Funcionarios)
+            {
+                Console.WriteLine($"\t Nome: {func}");
+            }
+        }
+    }
 }
