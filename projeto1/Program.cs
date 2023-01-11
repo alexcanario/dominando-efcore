@@ -24,7 +24,11 @@ class Program
 
         // EntendendoConsulta1xN();
 
-        EntendendoConsultaNx1();
+        // EntendendoConsultaNx1();
+
+        // DivisaoConsultas();
+
+        IgnorandoSplitQuery();
     }
 
     static void Setup(ApplicationContext db)
@@ -238,6 +242,68 @@ class Program
         foreach (var func in funcionarios)
         {
             Console.WriteLine($"Nome: {func.Nome} / Departamento: {func.Departamento?.Descricao}");
+        }
+    }
+
+    private static void DivisaoConsultas()
+    {
+        using var db = new ApplicationContext();
+        Setup(db);
+
+        var departamentos = db.Departamentos?
+            .Include(p => p.Funcionarios)
+            .Where(d => d.Id < 3)
+            //O método AsSplitQuery resolve o problema da explosao cartesiana no carregamento adiantado
+            .AsSplitQuery()
+            .ToList();
+
+        if (departamentos == null)
+        {
+            Console.WriteLine("Não existem departamentos:");
+            return;
+        }
+
+        foreach (var dep in departamentos)
+        {
+            Console.WriteLine($"Descricao: {dep.Descricao}");
+            if (dep.Funcionarios != null)
+            {
+                foreach (var func in dep.Funcionarios)
+                {
+                    Console.WriteLine($"\tNome: {func.Nome}");
+                }
+            }
+        }
+    }
+
+    private static void IgnorandoSplitQuery()
+    {
+        using var db = new ApplicationContext();
+        Setup(db);
+
+        var departamentos = db.Departamentos?
+            .Include(p => p.Funcionarios)
+            .Where(d => d.Id < 3)
+            //O método AsSingleQuery ignora o recurso de SplitQuery definido de forma global no OnConfigure do context
+            .AsSingleQuery()
+            .ToList();
+
+        if (departamentos == null)
+        {
+            Console.WriteLine("Não existem departamentos:");
+            return;
+        }
+
+        foreach (var dep in departamentos)
+        {
+            Console.WriteLine($"Descricao: {dep.Descricao}");
+            if (dep.Funcionarios != null)
+            {
+                foreach (var func in dep.Funcionarios)
+                {
+                    Console.WriteLine($"\tNome: {func.Nome}");
+                }
+            }
         }
     }
 }

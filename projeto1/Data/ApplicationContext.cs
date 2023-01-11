@@ -13,7 +13,8 @@ namespace projeto1.Data
         {
             const string strConn = "Server=(local); Database=C003; Encrypt=True; Integrated Security=True; Trust Server Certificate=true; pooling=true; MultipleActiveResultSets=True";
             optionsBuilder
-                .UseSqlServer(strConn)
+                //A extensão configura de modo global o splitQuery para todas as consultas
+                .UseSqlServer(strConn, c => c.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
                 .EnableSensitiveDataLogging()
                 .LogTo(Console.WriteLine, LogLevel.Information);
         }
