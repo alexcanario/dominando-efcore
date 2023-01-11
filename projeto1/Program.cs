@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using projeto1.Data;
 using projeto1.Domain;
 
@@ -13,8 +14,17 @@ class Program
 
         // IgnoreFiltroGlobal();
 
-        ConsultaProjetada();
+        // ConsultaProjetada();
 
+        // ConsultaParametrizada();
+
+        // ConsultaInterpolada();
+
+        // ConsultaComTag();
+
+        // EntendendoConsulta1xN();
+
+        EntendendoConsultaNx1();
     }
 
     static void Setup(ApplicationContext db)
@@ -105,6 +115,129 @@ class Program
             {
                 Console.WriteLine($"\t Nome: {func}");
             }
+        }
+    }
+
+    static void ConsultaParametrizada()
+    {
+        using var db = new ApplicationContext();
+        Setup(db);
+
+        // var id = 0;
+
+        var id = new SqlParameter
+        {
+            Value = 1,
+            SqlDbType = System.Data.SqlDbType.Int
+        };
+
+        var departamentos = db.Departamentos?
+        // .FromSqlRaw("SELECT * FROM Departamentos WITH(NOLOCK)")
+        //A consulta abaixo utilizando o FromSqlRaw, utiliza o recurso de sub-consulta, porém também podemos utilzar o LINQ como o Where abaixo
+         .FromSqlRaw("SELECT * FROM Departamentos WHERE Id > {0}", id)
+         .Where(p => !p.Excluido)
+        .ToList();
+
+        if (departamentos == null)
+        {
+            Console.WriteLine("Não existem departamentos:");
+            return;
+        }
+
+        foreach (var dep in departamentos)
+        {
+            Console.WriteLine($"Descricao: {dep.Descricao}");
+        }
+    }
+
+    static void ConsultaInterpolada()
+    {
+        using var db = new ApplicationContext();
+        Setup(db);
+
+        var id = 1;
+        var departamentos = db.Departamentos?
+            .FromSqlInterpolated($"SELECT * FROM Departamentos WHERE Id > {id}")
+            .ToList();
+
+        if (departamentos == null)
+        {
+            Console.WriteLine("Não existem departamentos:");
+            return;
+        }
+
+        foreach (var dep in departamentos)
+        {
+            Console.WriteLine($"Descricao: {dep.Descricao}");
+        }
+    }
+
+    static void ConsultaComTag()
+    {
+        using var db = new ApplicationContext();
+        Setup(db);
+
+        var departamentos = db.Departamentos?
+            .TagWith(@"Estou enviando uma tag para comentar minha query.
+                Segunda linha
+                Terceira linha")
+            .ToList();
+
+        if (departamentos == null)
+        {
+            Console.WriteLine("Não existem departamentos:");
+            return;
+        }
+
+        foreach (var dep in departamentos)
+        {
+            Console.WriteLine($"Descricao: {dep.Descricao}");
+        }
+    }
+
+    private static void EntendendoConsulta1xN()
+    {
+        using var db = new ApplicationContext();
+        Setup(db);
+
+        var departamentos = db.Departamentos?
+            .Include(p => p.Funcionarios)
+            .ToList();
+
+        if (departamentos == null)
+        {
+            Console.WriteLine("Não existem departamentos:");
+            return;
+        }
+
+        foreach (var dep in departamentos)
+        {
+            Console.WriteLine($"Descricao: {dep.Descricao}");
+            foreach (var func in dep.Funcionarios)
+            {
+                Console.WriteLine($"\tNome: {func.Nome}");
+            }
+        }
+    }
+
+    private static void EntendendoConsultaNx1()
+    {
+        using var db = new ApplicationContext();
+        Setup(db);
+
+        var funcionarios = db.Funcionarios?
+            .Include(p => p.Departamento)
+            .ToList();
+
+        if (funcionarios == null)
+        {
+            Console.WriteLine("Não existem funcionarios:");
+            return;
+        }
+
+        foreach (var func in funcionarios)
+        {
+            Console.WriteLine($"Nome: {func.Nome} / Departamento: {func.Departamento?.Descricao}");
         }
     }
 }
