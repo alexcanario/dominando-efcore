@@ -28,7 +28,11 @@ class Program
 
         // DivisaoConsultas();
 
-        IgnorandoSplitQuery();
+        // IgnorandoSplitQuery();
+
+        // CriarSPInserirEmDepartamento();
+
+        InserirDadosViaProcedure();
     }
 
     static void Setup(ApplicationContext db)
@@ -305,5 +309,28 @@ class Program
                 }
             }
         }
+    }
+
+    private static void CriarSPInserirEmDepartamento()
+    {
+        var criarSPInserirDepartamento = @"
+            CREATE OR ALTER PROCEDURE CriarDepartamento
+                @Descricao VARCHAR(50),
+                @Ativo bit
+            AS
+            BEGIN
+                INSERT INTO Departamentos(Descricao, Ativo, Excluido)
+                     VALUES (@Descricao, @Ativo, 0)
+            END;";
+
+        using var db = new ApplicationContext();
+        db.Database.ExecuteSqlRaw(criarSPInserirDepartamento);
+    }
+
+    private static void InserirDadosViaProcedure()
+    {
+        using var db = new ApplicationContext();
+
+        db.Database.ExecuteSqlRaw("execute CriarDepartamento @p0, @p1", "Departamento via procedure", true);
     }
 }
