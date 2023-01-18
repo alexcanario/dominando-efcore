@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using projeto1.Domain;
 
@@ -14,7 +15,10 @@ namespace projeto1.Data
             const string strConn = "Server=(local); Database=C003; Encrypt=True; Integrated Security=True; Trust Server Certificate=true; pooling=true; MultipleActiveResultSets=True";
             optionsBuilder
                 .UseSqlServer(strConn)
-                .LogTo(Console.WriteLine, LogLevel.Information);
+                .LogTo(Console.WriteLine,
+                    new[] { CoreEventId.ContextInitialized, RelationalEventId.CommandExecuted },
+                    LogLevel.Information,
+                    DbContextLoggerOptions.LocalTime | DbContextLoggerOptions.SingleLine);
 
         }
     }
