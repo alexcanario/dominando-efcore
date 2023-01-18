@@ -8,10 +8,10 @@ class Program
 {
     static void Main(string[] args)
     {
-        SPConsultarDepartamentos();
+        ConsultarDepartamento();
     }
 
-    static void Setup(ApplicationContext db)
+    private static void Setup(ApplicationContext db)
     {
         if (db.Departamentos == null) return;
 
@@ -36,5 +36,13 @@ class Program
             db.ChangeTracker.Clear();
         }
     }
+
+    private static void ConsultarDepartamento()
+    {
+        using var db = new ApplicationContext();
+
+        var departamentos = db.Departamentos?.Where(d => d.Id > 0).ToList();
+    }
+
 
 }
