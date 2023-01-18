@@ -13,18 +13,7 @@ namespace projeto1.Data
         {
             const string strConn = "Server=(local); Database=C003; Encrypt=True; Integrated Security=True; Trust Server Certificate=true; pooling=true; MultipleActiveResultSets=True";
             optionsBuilder
-                //A extensão configura de modo global o splitQuery para todas as consultas
-                //.UseSqlServer(strConn, c => c.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery))
-                .UseSqlServer(strConn)
-                .EnableSensitiveDataLogging()
-                .LogTo(Console.WriteLine, LogLevel.Information);
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            //Filtro Global
-            // modelBuilder.Entity<Departamento>().HasQueryFilter(d => !d.Excluido);
-            base.OnModelCreating(modelBuilder);
+                .UseSqlServer(strConn);
         }
     }
 }
