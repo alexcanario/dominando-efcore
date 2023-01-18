@@ -13,7 +13,9 @@ namespace projeto1.Data
         {
             const string strConn = "Server=(local); Database=C003; Encrypt=True; Integrated Security=True; Trust Server Certificate=true; pooling=true; MultipleActiveResultSets=True";
             optionsBuilder
-                .UseSqlServer(strConn);
+                .UseSqlServer(strConn)
+                .LogTo(Console.WriteLine, LogLevel.Information);
+
         }
     }
 }
