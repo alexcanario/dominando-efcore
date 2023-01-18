@@ -32,7 +32,11 @@ class Program
 
         // CriarSPInserirEmDepartamento();
 
-        InserirDadosViaProcedure();
+        // InserirDadosViaProcedure();
+
+        // CriarSPDeConsulta();
+
+        SPConsultarDepartamentos();
     }
 
     static void Setup(ApplicationContext db)
@@ -333,4 +337,48 @@ class Program
 
         db.Database.ExecuteSqlRaw("execute CriarDepartamento @p0, @p1", "Departamento via procedure", true);
     }
+
+    private static void CriarSPDeConsulta()
+    {
+        var consulta = @"
+            CREATE OR ALTER PROCEDURE GetDepartamentos
+                @Descricao VARCHAR(50)
+            AS
+            BEGIN
+                SELECT * FROM Departamentos WHERE Descricao LIKE @Descricao + '%'
+            END;";
+
+        using var db = new ApplicationContext();
+        db.Database.ExecuteSqlRaw(consulta);
+    }
+
+    private static void SPConsultarDepartamentos()
+    {
+        var consulta1 = "EXECUTE GetDepartamentos @p0";
+
+        var consulta2 = "EXECUTE GetDepartamentos @par";
+        var parametro = new SqlParameter("@par", "Depart");
+
+        using var db = new ApplicationContext();
+
+        //Consulta 1
+        // var departamentos = db.Departamentos?.FromSqlRaw(consulta1, "Dep").ToList();
+
+        //Consulta 2 
+        // var departamentos = db.Departamentos?.FromSqlRaw(consulta2, parametro).ToList();
+
+        //Consulta 3
+        var departamentos = db.Departamentos?.FromSqlInterpolated($"EXECUTE GetDepartamentos {parametro}").ToList();
+
+        if (departamentos == null)
+        {
+            Console.WriteLine("Não existes departamentos");
+        }
+
+        foreach (var dep in departamentos)
+        {
+            Console.WriteLine($"Departamento: {dep.Descricao}");
+        }
+    }
+
 }
