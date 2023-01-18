@@ -350,3 +350,5 @@ MigrationBackup/
 .ionide/
 bin/
 obj/
+projeto1/bin/
+projeto1/obj/
