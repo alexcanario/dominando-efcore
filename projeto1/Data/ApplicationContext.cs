@@ -20,7 +20,8 @@ namespace projeto1.Data
                 //     new[] { CoreEventId.ContextInitialized, RelationalEventId.CommandExecuted },
                 //     LogLevel.Information,
                 //     DbContextLoggerOptions.LocalTime | DbContextLoggerOptions.SingleLine);
-                .LogTo(_writer.WriteLine, LogLevel.Information);
+                //.LogTo(_writer.WriteLine, LogLevel.Information);
+                .EnableDetailedErrors();
 
         }
 
