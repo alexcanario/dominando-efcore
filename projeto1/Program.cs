@@ -8,7 +8,9 @@ class Program
 {
     static void Main(string[] args)
     {
-        ConsultarDepartamento();
+        // ConsultarDepartamento();
+
+        DadosSensiveis();
     }
 
     private static void Setup(ApplicationContext db)
@@ -41,7 +43,15 @@ class Program
     {
         using var db = new ApplicationContext();
 
-        var departamentos = db.Departamentos?.Where(d => d.Id > 0).ToList();
+        var departamentos = db.Departamentos?.Where(d => d.Id > 0).ToArray();
+    }
+
+    private static void DadosSensiveis()
+    {
+        using var db = new ApplicationContext();
+
+        var descricao = "Departamento 01";
+        var departamentos = db.Departamentos?.Where(d => d.Descricao == descricao).ToArray();
     }
 
 
