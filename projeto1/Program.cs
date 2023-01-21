@@ -10,7 +10,9 @@ class Program
     {
         // ConsultarDepartamento();
 
-        DadosSensiveis();
+        // DadosSensiveis();
+
+        HabilitandoBatchSize();
     }
 
     private static void Setup(ApplicationContext db)
@@ -54,5 +56,19 @@ class Program
         var departamentos = db.Departamentos?.Where(d => d.Descricao == descricao).ToArray();
     }
 
+    private static void HabilitandoBatchSize()
+    {
+        using var db = new ApplicationContext();
+
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
+
+        for (var i = 1; i <= 50; i++)
+        {
+            db.Departamentos?.Add(new Departamento { Descricao = $"Departamento " + i });
+        }
+
+        db.SaveChanges();
+    }
 
 }
