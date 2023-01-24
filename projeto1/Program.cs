@@ -14,7 +14,9 @@ class Program
 
         // HabilitandoBatchSize();
 
-        TempoComandoGeral();
+        // TempoComandoGeral();
+
+        ExecutarEstrategiaResiliencia();
     }
 
     private static void Setup(ApplicationContext db)
@@ -83,5 +85,21 @@ class Program
 
         //Executando o mesmo comando sql com um tempo de 7 segundos
         db.Database.ExecuteSqlRaw("WAITFOR DELAY '00:00:07'; SELECT 1");
+    }
+
+    private static void ExecutarEstrategiaResiliencia()
+    {
+        using var db = new ApplicationContext();
+
+        var strategy = db.Database.CreateExecutionStrategy();
+        strategy.Execute(() =>
+        {
+            using var transaction = db.Database.BeginTransaction();
+
+            db.Departamentos?.Add(new Departamento { Descricao = "Departamento transacao" });
+            db.SaveChanges();
+
+            transaction.Commit();
+        });
     }
 }
