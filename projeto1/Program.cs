@@ -12,7 +12,9 @@ class Program
 
         // DadosSensiveis();
 
-        HabilitandoBatchSize();
+        // HabilitandoBatchSize();
+
+        TempoComandoGeral();
     }
 
     private static void Setup(ApplicationContext db)
@@ -71,4 +73,13 @@ class Program
         db.SaveChanges();
     }
 
+    private static void TempoComandoGeral()
+    {
+        using var db = new ApplicationContext();
+
+        // db.Database.ExecuteSqlRaw("SELECT 1");
+
+        //Executando o mesmo comando sql com um tempo de 7 segundos
+        db.Database.ExecuteSqlRaw("WAITFOR DELAY '00:00:07'; SELECT 1");
+    }
 }
