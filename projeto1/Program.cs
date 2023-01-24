@@ -79,6 +79,8 @@ class Program
 
         // db.Database.ExecuteSqlRaw("SELECT 1");
 
+        db.Database.SetCommandTimeout(10);
+
         //Executando o mesmo comando sql com um tempo de 7 segundos
         db.Database.ExecuteSqlRaw("WAITFOR DELAY '00:00:07'; SELECT 1");
     }
