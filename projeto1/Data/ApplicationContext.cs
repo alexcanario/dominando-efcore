@@ -15,7 +15,12 @@ namespace projeto1.Data
         {
             const string strConn = "Server=(local); Database=C003; Encrypt=True; Integrated Security=True; Trust Server Certificate=true; pooling=true; MultipleActiveResultSets=True";
             optionsBuilder
-                .UseSqlServer(strConn, o => o.MaxBatchSize(100).CommandTimeout(5))
+                .UseSqlServer(strConn,
+                    o => o
+                        .MaxBatchSize(100)
+                        .CommandTimeout(5)
+                        .EnableRetryOnFailure(4, TimeSpan.FromSeconds(10), null))
+
                 .LogTo(Console.WriteLine, LogLevel.Information)
                 .EnableSensitiveDataLogging();
 
