@@ -7,7 +7,6 @@ namespace projeto1.Data
 {
     public class ApplicationContext : DbContext
     {
-        private readonly StreamWriter _writer = new StreamWriter("ef-core-log-txt", append: true);
         public DbSet<Funcionario>? Funcionarios { get; set; }
         public DbSet<Departamento>? Departamentos { get; set; }
 
@@ -15,22 +14,9 @@ namespace projeto1.Data
         {
             const string strConn = "Server=(local); Database=C003; Encrypt=True; Integrated Security=True; Trust Server Certificate=true; pooling=true; MultipleActiveResultSets=True";
             optionsBuilder
-                .UseSqlServer(strConn,
-                    o => o
-                        .MaxBatchSize(100)
-                        .CommandTimeout(5)
-                        .EnableRetryOnFailure(4, TimeSpan.FromSeconds(10), null))
-
+                .UseSqlServer(strConn)
                 .LogTo(Console.WriteLine, LogLevel.Information)
                 .EnableSensitiveDataLogging();
-
-
-        }
-
-        public override void Dispose()
-        {
-            _writer.Dispose();
-            base.Dispose();
         }
     }
 }
