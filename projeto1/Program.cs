@@ -8,7 +8,15 @@ class Program
 {
     static void Main(string[] args)
     {
+        RecriaBanco();
+    }
 
+    private static void RecriaBanco()
+    {
+        using var db = new ApplicationContext();
+
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
     }
 
     private static void Setup(ApplicationContext db)
