@@ -24,6 +24,13 @@ namespace projeto1.Data
             modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AI");
 
             modelBuilder.Entity<Departamento>().Property(p => p.Descricao).UseCollation("SQL_Latin1_General_CP1_CS_AS");
+
+            modelBuilder.HasSequence<int>("seq_funcionario_id", "my_sequences")
+                .StartsAt(1)
+                .IncrementsBy(2)
+                .HasMin(1);
+
+            modelBuilder.Entity<Funcionario>().Property(p => p.Id).HasDefaultValueSql("NEXT VALUE FOR my_sequences.seq_funcionario_id");
         }
     }
 }
