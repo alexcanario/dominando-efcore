@@ -9,10 +9,10 @@ class Program
     static void Main(string[] args)
     {
         using var db = new ApplicationContext();
-
         RecriaBanco(db);
-
         Setup(db);
+
+
     }
 
     private static void RecriaBanco(ApplicationContext db)
@@ -46,5 +46,7 @@ class Program
             db.ChangeTracker.Clear();
         }
     }
+
+
 
 }

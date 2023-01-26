@@ -21,16 +21,28 @@ namespace projeto1.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AI");
+            // modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AI");
 
-            modelBuilder.Entity<Departamento>().Property(p => p.Descricao).UseCollation("SQL_Latin1_General_CP1_CS_AS");
+            // modelBuilder.Entity<Departamento>().Property(p => p.Descricao).UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
-            modelBuilder.HasSequence<int>("seq_funcionario_id", "my_sequences")
-                .StartsAt(1)
-                .IncrementsBy(2)
-                .HasMin(1);
+            // modelBuilder.HasSequence<int>("seq_funcionario_id", "my_sequences")
+            //     .StartsAt(1)
+            //     .IncrementsBy(2)
+            //     .HasMin(1);
 
-            modelBuilder.Entity<Funcionario>().Property(p => p.Id).HasDefaultValueSql("NEXT VALUE FOR my_sequences.seq_funcionario_id");
+            // modelBuilder.Entity<Funcionario>().Property(p => p.Id).HasDefaultValueSql("NEXT VALUE FOR my_sequences.seq_funcionario_id");
+
+            //8.03 Índices
+            modelBuilder.Entity<Departamento>()
+                .HasIndex(p => p.Descricao);
+
+            //Índide com chave composto
+            modelBuilder.Entity<Funcionario>()
+                .HasIndex(p => new { p.Nome, p.Cpf })
+                .HasDatabaseName("idx_meu_indice_composto")
+                .HasFilter("Nome IS NOT NULL") //Filtro para nao indexar funcionarios com nome nulo
+                .HasFillFactor(80)
+                .IsUnique();
         }
     }
 }
