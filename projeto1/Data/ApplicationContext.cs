@@ -46,10 +46,15 @@ namespace projeto1.Data
             //     .IsUnique();
 
             //Aula 8.04 Propagação de dados (SEED)
-            modelBuilder.Entity<Estado>().HasData(
-                new Estado { Id = 1, Nome = "Bahia" },
-                new Estado { Id = 2, Nome = "Sergipe" }
-            );
+            // modelBuilder.Entity<Estado>().HasData(
+            //     new Estado { Id = 1, Nome = "Bahia" },
+            //     new Estado { Id = 2, Nome = "Sergipe" }
+            // );
+
+            //Aula 8.05 Schemas
+            modelBuilder.HasDefaultSchema("Cadastros");
+            modelBuilder.Entity<Estado>().ToTable("Estados", "Uf");
+
         }
     }
 }

@@ -12,7 +12,8 @@ class Program
         RecriaBanco(db);
         Setup(db);
 
-        Propagacao(db);
+        // Propagacao(db);
+        Schema(db);
     }
 
     private static void RecriaBanco(ApplicationContext db)
@@ -53,6 +54,10 @@ class Program
         Console.WriteLine(script);
     }
 
-
+    private static void Schema(ApplicationContext db)
+    {
+        var script = db.Database.GenerateCreateScript();
+        Console.WriteLine(script);
+    }
 
 }
