@@ -12,7 +12,7 @@ class Program
         RecriaBanco(db);
         Setup(db);
 
-
+        Propagacao(db);
     }
 
     private static void RecriaBanco(ApplicationContext db)
@@ -45,6 +45,12 @@ class Program
             db.SaveChanges();
             db.ChangeTracker.Clear();
         }
+    }
+
+    private static void Propagacao(ApplicationContext db)
+    {
+        var script = db.Database.GenerateCreateScript();
+        Console.WriteLine(script);
     }
 
 

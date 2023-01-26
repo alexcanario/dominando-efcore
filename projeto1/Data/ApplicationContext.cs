@@ -9,6 +9,7 @@ namespace projeto1.Data
     {
         public DbSet<Funcionario>? Funcionarios { get; set; }
         public DbSet<Departamento>? Departamentos { get; set; }
+        public DbSet<Estado>? Estados { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -33,16 +34,22 @@ namespace projeto1.Data
             // modelBuilder.Entity<Funcionario>().Property(p => p.Id).HasDefaultValueSql("NEXT VALUE FOR my_sequences.seq_funcionario_id");
 
             //8.03 Índices
-            modelBuilder.Entity<Departamento>()
-                .HasIndex(p => p.Descricao);
+            // modelBuilder.Entity<Departamento>()
+            //     .HasIndex(p => p.Descricao);
 
             //Índide com chave composto
-            modelBuilder.Entity<Funcionario>()
-                .HasIndex(p => new { p.Nome, p.Cpf })
-                .HasDatabaseName("idx_meu_indice_composto")
-                .HasFilter("Nome IS NOT NULL") //Filtro para nao indexar funcionarios com nome nulo
-                .HasFillFactor(80)
-                .IsUnique();
+            // modelBuilder.Entity<Funcionario>()
+            //     .HasIndex(p => new { p.Nome, p.Cpf })
+            //     .HasDatabaseName("idx_meu_indice_composto")
+            //     .HasFilter("Nome IS NOT NULL") //Filtro para nao indexar funcionarios com nome nulo
+            //     .HasFillFactor(80)
+            //     .IsUnique();
+
+            //Aula 8.04 Propagação de dados (SEED)
+            modelBuilder.Entity<Estado>().HasData(
+                new Estado { Id = 1, Nome = "Bahia" },
+                new Estado { Id = 2, Nome = "Sergipe" }
+            );
         }
     }
 }
