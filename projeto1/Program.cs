@@ -18,7 +18,11 @@ class Program
 
         // ConversorCustomizado();
 
-        PropriedadesDeSombra();
+        // PropriedadesDeSombra();
+
+        // TrabalhandoComPropriedadesSombra();
+
+        ConsultandoPropriedadeSombra();
     }
 
     private static void RecriaBanco(ApplicationContext db)
@@ -87,6 +91,27 @@ class Program
 
         db.Database.EnsureDeleted();
         db.Database.EnsureCreated();
+    }
+
+    private static void TrabalhandoComPropriedadesSombra()
+    {
+        using var db = new ApplicationContext();
+
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
+
+        var departamento = new Departamento { Descricao = "Trabalhando com propriedade sombra" };
+
+        db.Departamentos?.Add(departamento);
+        db.Entry(departamento).Property("UltimaAtualizacao").CurrentValue = DateTime.Now;
+        db.SaveChanges();
+    }
+
+    private static void ConsultandoPropriedadeSombra()
+    {
+        using var db = new ApplicationContext();
+
+        var dep = db.Departamentos?.Where(p => EF.Property<DateTime>(p, "UltimaAtualizacao") < DateTime.Now).ToArray();
     }
 
 }
