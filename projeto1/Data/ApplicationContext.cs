@@ -73,9 +73,12 @@ namespace projeto1.Data
             //Microsoft.EntityFrameworkCore.Storage.ValueConversion...
 
             //Aula 8.07
-            modelBuilder.Entity<Conversor>()
-                .Property(p => p.Status)
-                .HasConversion(new ConversorCustom());
+            // modelBuilder.Entity<Conversor>()
+            //     .Property(p => p.Status)
+            //     .HasConversion(new ConversorCustom());
+
+            //Aula 8.09
+            modelBuilder.Entity<Departamento>().Property<DateTime>("UltimaAtualizacao");
 
         }
     }
