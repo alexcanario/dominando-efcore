@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Logging;
+using projeto1.Conversores;
 using projeto1.Domain;
 
 namespace projeto1.Data
@@ -58,20 +59,23 @@ namespace projeto1.Data
             // modelBuilder.Entity<Estado>().ToTable("Estados", "Uf");
 
             //Aula 8.06 Conversores
-            var conversor1 = new ValueConverter<Versao, string>(p => p.ToString(), p => (Versao)Enum.Parse(typeof(Versao), p));
-            var conversor2 = new EnumToStringConverter<Versao>();
+            // var conversor1 = new ValueConverter<Versao, string>(p => p.ToString(), p => (Versao)Enum.Parse(typeof(Versao), p));
+            // var conversor2 = new EnumToStringConverter<Versao>();
 
-            modelBuilder.Entity<Conversor>()
-                .Property(p => p.Versao)
-                //.HasConversion<string>();
-                //.HasConversion(p => p.ToString(), p => (Versao)Enum.Parse(typeof(Versao), p));
-                // .HasConversion(conversor1);
-                .HasConversion(conversor2);
+            // modelBuilder.Entity<Conversor>()
+            //     .Property(p => p.Versao)
+            //     //.HasConversion<string>();
+            //     //.HasConversion(p => p.ToString(), p => (Versao)Enum.Parse(typeof(Versao), p));
+            //     // .HasConversion(conversor1);
+            //     .HasConversion(conversor2);
 
             //Conversores disponiveis
             //Microsoft.EntityFrameworkCore.Storage.ValueConversion...
 
             //Aula 8.07
+            modelBuilder.Entity<Conversor>()
+                .Property(p => p.Status)
+                .HasConversion(new ConversorCustom());
 
         }
     }
