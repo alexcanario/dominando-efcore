@@ -14,7 +14,7 @@ namespace projeto1.Domain
         public string? Cpf { get; set; }
         public int Rg { get; set; }
 
-        public int DepartamentoId { get; set; }
+        // public int DepartamentoId { get; set; }
         public virtual Departamento? Departamento { get; set; }
     }
 }

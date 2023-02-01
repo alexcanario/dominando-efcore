@@ -1,5 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using projeto1.Data;
 using projeto1.Domain;
 
@@ -17,7 +16,9 @@ class Program
 
         // Conversor(db);
 
-        ConversorCustomizado();
+        // ConversorCustomizado();
+
+        PropriedadesDeSombra();
     }
 
     private static void RecriaBanco(ApplicationContext db)
@@ -80,6 +81,12 @@ class Program
         var conversorDevolvido = db.Conversores?.AsNoTracking().FirstOrDefault(p => p.Status == Status.Devolvido);
     }
 
+    private static void PropriedadesDeSombra()
+    {
+        using var db = new ApplicationContext();
 
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
+    }
 
 }
