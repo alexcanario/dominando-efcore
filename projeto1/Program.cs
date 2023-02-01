@@ -22,7 +22,9 @@ class Program
 
         // TrabalhandoComPropriedadesSombra();
 
-        ConsultandoPropriedadeSombra();
+        // ConsultandoPropriedadeSombra();
+
+        TiposDePropriedade();
     }
 
     private static void RecriaBanco(ApplicationContext db)
@@ -113,5 +115,32 @@ class Program
 
         var dep = db.Departamentos?.Where(p => EF.Property<DateTime>(p, "UltimaAtualizacao") < DateTime.Now).ToArray();
     }
+
+    private static void TiposDePropriedade()
+    {
+        using var db = new ApplicationContext();
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
+
+        var cliente = new Cliente { Nome = "Fulano", Telefone = "71 9.9600-9564", Endereco = new Endereco { Logradouro = "Rua", Bairro = "Centro", Cidade = "Salvador", Estado = "Bahia" } };
+
+        db.Clientes?.Add(cliente);
+        db.SaveChanges();
+
+        var clientes = db.Clientes?.AsNoTracking().ToList();
+
+        var options = new System.Text.Json.JsonSerializerOptions { WriteIndented = true };
+
+        clientes?.ForEach(c =>
+        {
+            var json = System.Text.Json.JsonSerializer.Serialize(c, options);
+            Console.WriteLine(json);
+        });
+
+        var clst = System.Text.Json.JsonSerializer.Serialize(clientes, options);
+        Console.WriteLine(clst);
+    }
+
+
 
 }
