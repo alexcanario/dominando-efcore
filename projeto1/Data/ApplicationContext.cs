@@ -13,9 +13,7 @@ namespace projeto1.Data
         public DbSet<Departamento>? Departamentos { get; set; }
         public DbSet<Estado>? Estados { get; set; }
         public DbSet<Conversor>? Conversores { get; set; }
-        public DbSet<Cliente>?
-         Clientes
-        { get; set; }
+        public DbSet<Cliente>? Clientes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
