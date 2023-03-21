@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using projeto1.Data;
 using projeto1.Domain;
+using System;
+using System.Linq;
 
 namespace DominandoEFCore;
 class Program
@@ -24,7 +26,11 @@ class Program
 
         // ConsultandoPropriedadeSombra();
 
-        TiposDePropriedade();
+        // TiposDePropriedade();
+
+        //Aula 8.12 Configurando relacionamento 1 para 1
+        //08/03/2023
+        Relacionamento1Para1();
     }
 
     private static void RecriaBanco(ApplicationContext db)
@@ -141,6 +147,28 @@ class Program
         Console.WriteLine(clst);
     }
 
+    private static void Relacionamento1Para1()
+    {
+        using var db = new ApplicationContext();
 
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
 
+        var sergipe = new Estado()
+        {
+            Nome = "Sergipe",
+            Governador = new Governador { Nome = "Rafael Almeida" }
+        };
+
+        db.Estados.Add(sergipe);
+        db.SaveChanges();
+
+        var estados = db.Estados.Include(_ => _.Governador).AsNoTracking().ToList();
+        if (estados == null) return;
+
+        estados.ForEach(e =>
+        {
+            Console.WriteLine($"Estado: {e.Nome}, Governador: {e.Governador.Nome}");
+        });
+    }
 }
