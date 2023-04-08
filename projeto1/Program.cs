@@ -154,21 +154,12 @@ class Program
         db.Database.EnsureDeleted();
         db.Database.EnsureCreated();
 
-        var sergipe = new Estado()
-        {
-            Nome = "Sergipe",
-            Governador = new Governador { Nome = "Rafael Almeida" }
-        };
-
-        db.Estados.Add(sergipe);
-        db.SaveChanges();
-
-        var estados = db.Estados.Include(_ => _.Governador).AsNoTracking().ToList();
+        var estados = db.Estados?.Include(_ => _.Governador).AsNoTracking().ToList();
         if (estados == null) return;
 
         estados.ForEach(e =>
         {
-            Console.WriteLine($"Estado: {e.Nome}, Governador: {e.Governador.Nome}");
+            Console.WriteLine($"Estado: {e.Nome}, Governador: {e.Governador?.Nome}");
         });
     }
 }

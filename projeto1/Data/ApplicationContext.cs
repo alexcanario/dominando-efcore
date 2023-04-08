@@ -1,9 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.Logging;
-using projeto1.Conversores;
 using projeto1.Domain;
+using projeto1.Seed;
 
 namespace projeto1.Data
 {
@@ -78,35 +76,10 @@ namespace projeto1.Data
             //     .Property(p => p.Status)
             //     .HasConversion(new ConversorCustom());
 
-            //Aula 8.09
-            modelBuilder.Entity<Departamento>().Property<DateTime>("UltimaAtualizacao");
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationContext).Assembly);
 
-            //Aula 8.11
-            modelBuilder.Entity<Cliente>(p =>
-            {
-                p.OwnsOne(_ => _.Endereco, e =>
-                {
-                    e.Property(_ => _.Bairro).HasColumnName("Bairro");
-                    // e.ToTable("Enderecos_Clientes");
-                });
-            });
-
-            modelBuilder.Entity<Cliente>(c =>
-            {
-                c.HasData(new Cliente
-                {
-                    Id = 10,
-                    Nome = "Zezinho"
-                });
-
-                c.OwnsOne(a => a.Endereco).HasData(
-                    new
-                    {
-                        ClienteId = 10,
-                        Logradouro = "Rua"
-                    }
-                );
-            });
+            ClienteSeed.SowCliente(modelBuilder);
+            EstadoSeed.SowEstado(modelBuilder);
         }
     }
 }
