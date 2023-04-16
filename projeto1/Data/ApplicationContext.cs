@@ -13,10 +13,12 @@ namespace projeto1.Data
         public DbSet<Conversor>? Conversores { get; set; }
         public DbSet<Cliente>? Clientes { get; set; }
 
-
         //ALex Canario 16/04/2023
         public DbSet<Ator>? Atores { get; set; }
         public DbSet<Filme>? Filmes { get; set; }
+
+        //Alex Canario 16/04/2023
+        public DbSet<Documento>? Documentos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -86,6 +88,7 @@ namespace projeto1.Data
             ClienteSeed.SowCliente(modelBuilder);
             EstadoSeed.SowEstado(modelBuilder);
             AtoresFilmesSeed.SowFilmesEAtores(modelBuilder);
+            DocumentoSeed.SowDocumentos(modelBuilder);
         }
     }
 }

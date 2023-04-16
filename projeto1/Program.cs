@@ -28,13 +28,15 @@ class Program
 
         // TiposDePropriedade();
 
-        //Aula 8.12 Configurando relacionamento 1 para 1
-        //08/03/2023
+        //Aula 8.12 Configurando relacionamento 1 para 1, 08/03/2023
         // Relacionamento1Para1();
 
-        //Aula 8.13 Configurando relacionamento muitos para muitos
-        //16/04/2023 
-        RelacionamentoMuitosParaMuitos();
+        //Aula 8.13 Configurando relacionamento muitos para muitos, 16/04/2023 
+        //RelacionamentoMuitosParaMuitos();
+
+        //Aula 8.15 Campos de apoio, 16/04/2023
+        CampoDeApoio();
+
     }
 
     private static void RecriaBanco(ApplicationContext db)
@@ -184,5 +186,27 @@ class Program
                 Console.WriteLine($"\tFilme: {filmes.Descricao}");
             }
         }
+    }
+
+    //Aula 8.15 Campo de Apoio
+    private static void CampoDeApoio()
+    {
+        using var db = new ApplicationContext();
+
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
+
+        // var doc = new Documento();
+        // doc.SetCpf("1234567901");
+
+        // db.Documentos?.Add(doc);
+        // db.SaveChanges();
+
+        foreach (var docs in db.Documentos?.AsNoTracking())
+        {
+            // Console.WriteLine($"Cpf: {docs.CPF}");
+            Console.WriteLine($"Cpf: {docs.GetCPF()}");
+        }
+
     }
 }
