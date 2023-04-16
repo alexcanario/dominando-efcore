@@ -13,6 +13,11 @@ namespace projeto1.Data
         public DbSet<Conversor>? Conversores { get; set; }
         public DbSet<Cliente>? Clientes { get; set; }
 
+
+        //ALex Canario 16/04/2023
+        public DbSet<Ator>? Atores { get; set; }
+        public DbSet<Filme>? Filmes { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             const string strConn = "Server=(local); Database=C003; Encrypt=True; Integrated Security=True; Trust Server Certificate=true; pooling=true; MultipleActiveResultSets=True";
@@ -80,6 +85,7 @@ namespace projeto1.Data
 
             ClienteSeed.SowCliente(modelBuilder);
             EstadoSeed.SowEstado(modelBuilder);
+            AtoresFilmesSeed.SowFilmesEAtores(modelBuilder);
         }
     }
 }

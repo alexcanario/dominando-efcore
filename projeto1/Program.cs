@@ -30,7 +30,11 @@ class Program
 
         //Aula 8.12 Configurando relacionamento 1 para 1
         //08/03/2023
-        Relacionamento1Para1();
+        // Relacionamento1Para1();
+
+        //Aula 8.13 Configurando relacionamento muitos para muitos
+        //16/04/2023 
+        RelacionamentoMuitosParaMuitos();
     }
 
     private static void RecriaBanco(ApplicationContext db)
@@ -161,5 +165,24 @@ class Program
         {
             Console.WriteLine($"Estado: {e.Nome}, Governador: {e.Governador?.Nome}");
         });
+    }
+
+    private static void RelacionamentoMuitosParaMuitos()
+    {
+        using var db = new ApplicationContext();
+
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
+
+        foreach (var atores in db.Atores?.Include(_ => _.Filmes))
+        {
+            Console.WriteLine($"Ator: {atores.Nome}");
+            if (atores.Filmes != null && atores.Filmes.Any()) continue;
+
+            foreach (var filmes in atores.Filmes)
+            {
+                Console.WriteLine($"\tFilme: {filmes.Descricao}");
+            }
+        }
     }
 }
