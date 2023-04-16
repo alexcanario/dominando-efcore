@@ -10,10 +10,12 @@ public static class EstadoSeed
         var sergipe = new Estado()
         {
             Id = 1,
-            Nome = "Sergipe",
-            Governador = new Governador { Id = 1, Nome = "Rafael Almeida", EstadoId = 1 }
+            Nome = "Sergipe"
         };
 
+        var governador = new Governador { Id = 1, Nome = "Rafael Almeida", EstadoId = 1 };
+
         modelBuilder.Entity<Estado>().HasData(sergipe);
+        modelBuilder.Entity<Governador>().HasData(governador);
     }
 }
