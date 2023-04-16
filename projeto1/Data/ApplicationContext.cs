@@ -20,6 +20,12 @@ namespace projeto1.Data
         //Alex Canario 16/04/2023
         public DbSet<Documento>? Documentos { get; set; }
 
+        //Alex Canario 16/04/2023, Aula 8.16, configurando modelo de dados com TPH
+        public DbSet<Pessoa>? Pessoas { get; set; }
+        public DbSet<Instrutor>? Instrutores { get; set; }
+        public DbSet<Aluno>? Alunos { get; set; }
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             const string strConn = "Server=(local); Database=C003; Encrypt=True; Integrated Security=True; Trust Server Certificate=true; pooling=true; MultipleActiveResultSets=True";
@@ -89,6 +95,8 @@ namespace projeto1.Data
             EstadoSeed.SowEstado(modelBuilder);
             AtoresFilmesSeed.SowFilmesEAtores(modelBuilder);
             DocumentoSeed.SowDocumentos(modelBuilder);
+            AlunosSeed.SowAlunos(modelBuilder);
+            InstrutoresSeed.SowInstrutores(modelBuilder);
         }
     }
 }

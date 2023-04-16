@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using projeto1.Data;
 using projeto1.Domain;
-using System;
-using System.Linq;
 
 namespace DominandoEFCore;
 class Program
@@ -35,7 +33,10 @@ class Program
         //RelacionamentoMuitosParaMuitos();
 
         //Aula 8.15 Campos de apoio, 16/04/2023
-        CampoDeApoio();
+        // CampoDeApoio();
+
+        //Aula 8.16 Modelo Tph
+        ModeloTph();
 
     }
 
@@ -207,6 +208,41 @@ class Program
             // Console.WriteLine($"Cpf: {docs.CPF}");
             Console.WriteLine($"Cpf: {docs.GetCPF()}");
         }
+    }
 
+    //Alex Canario 16/04/2023, Aula 8.16, configurando modelo de dados com TPH
+    private static void ModeloTph()
+    {
+        using var db = new ApplicationContext();
+
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
+
+        // var instrutor = new Instrutor() { Nome = "Rafael Almeida", Desde = DateTime.Now, Materia = "Matematica" };
+
+        // var aluno = new Aluno() { Nome = "Maria Carvalho", DataContrato = DateTime.Now, Idade = 21 };
+
+        // db.AddRange(instrutor, aluno);
+        // db.SaveChanges();
+
+        var instrutores = db.Instrutores?.AsNoTracking().ToList();
+        var alunos = db.Pessoas?.OfType<Aluno>()?.AsNoTracking().ToList();
+
+        Console.WriteLine("Instrutores:");
+        Console.WriteLine("-----------------------------------");
+        foreach (var i in instrutores)
+        {
+            Console.WriteLine($"Id: {i.Id} -> {i.Nome}, Materia: {i.Materia}, Desde: {i.Desde}");
+        }
+        Console.WriteLine("");
+
+
+        Console.WriteLine("Alunos:");
+        Console.WriteLine("-----------------------------------");
+        foreach (var a in alunos)
+        {
+            Console.WriteLine($"Id: {a.Id} -> {a.Nome}, Idade: {a.Idade}, Matriculado em: {a.DataContrato}");
+        }
+        Console.WriteLine("");
     }
 }
