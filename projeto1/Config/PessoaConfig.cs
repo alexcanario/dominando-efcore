@@ -10,10 +10,11 @@ public class PessoaConfig : IEntityTypeConfiguration<Pessoa>
     {
         builder.ToTable("Pessoas");
 
-        builder
-            .HasDiscriminator<int>("TipoPessoa")
-                .HasValue<Pessoa>(1)
-                .HasValue<Aluno>(2)
-                .HasValue<Instrutor>(3);
+        //TPH
+        // builder
+        //     .HasDiscriminator<int>("TipoPessoa")
+        //         .HasValue<Pessoa>(1)
+        //         .HasValue<Aluno>(2)
+        //         .HasValue<Instrutor>(3);
     }
 }
