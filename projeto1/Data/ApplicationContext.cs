@@ -25,6 +25,8 @@ namespace projeto1.Data
         public DbSet<Instrutor>? Instrutores { get; set; }
         public DbSet<Aluno>? Alunos { get; set; }
 
+        //Alex Canario, 16/04/2023, Aula 8.18, Bolsa de propriedades
+        public DbSet<Dictionary<string, object>>? Configuracoes => Set<Dictionary<string, object>>("Configuracoes");
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -90,6 +92,15 @@ namespace projeto1.Data
             //     .HasConversion(new ConversorCustom());
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationContext).Assembly);
+
+            //Alex Canario, 16/04/2023, Aula 8.18, Bolsa de propriedades
+            modelBuilder.SharedTypeEntity<Dictionary<string, object>>("Configuracoes", b =>
+            {
+                b.Property<int>("Id");
+
+                b.Property<string>("Chave").HasColumnType("VARCHAR(40)").IsRequired(true);
+                b.Property<string>("Valor").HasColumnType("VARCHAR(255)").IsRequired(true);
+            });
 
             ClienteSeed.SowCliente(modelBuilder);
             EstadoSeed.SowEstado(modelBuilder);

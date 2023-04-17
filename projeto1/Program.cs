@@ -36,8 +36,10 @@ class Program
         // CampoDeApoio();
 
         //Aula 8.16 Modelo Tph
-        ModeloTph();
+        // ModeloTph();
 
+        //Alex Canario, 16/04/2023, Aula 8.18, Bolsa de propriedades
+        PacoteDePropriedades();
     }
 
     private static void RecriaBanco(ApplicationContext db)
@@ -244,5 +246,30 @@ class Program
             Console.WriteLine($"Id: {a.Id} -> {a.Nome}, Idade: {a.Idade}, Matriculado em: {a.DataContrato}");
         }
         Console.WriteLine("");
+    }
+
+    //Alex Canario, 16/04/2023, Aula 8.18, Bolsa de propriedades
+    private static void PacoteDePropriedades()
+    {
+        using var db = new ApplicationContext();
+
+        db.Database.EnsureDeleted();
+        db.Database.EnsureDeleted();
+
+        var configuracao = new Dictionary<string, object>()
+        {
+            ["Chave"] = "SenhaBancoDeDados",
+            ["Valor"] = Guid.NewGuid().ToString()
+        };
+
+        db.Configuracoes?.Add(configuracao);
+        db.SaveChanges();
+
+        var configs = db.Configuracoes?.AsNoTracking().Where(c => c["Chave"] == "SenhaDoBandoDeDados").ToArray();
+        if (configs == null) return;
+        foreach (var c in configs)
+        {
+            Console.WriteLine($"Chave: {c["Chave"]}, Valor: {c["Valor"]}");
+        }
     }
 }
