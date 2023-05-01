@@ -30,7 +30,7 @@ namespace projeto1.Data
 
         // Aula 9.01, 01/05/2023 Atributo Table
         public DbSet<Atributo>? Atributos { get; set; }
-
+ 
         //Aula 9.02, 01/05/2023 Atributo Inverse Property
         public DbSet<Aeroporto>? Aeroportos { get; set; }
 

@@ -245,7 +245,7 @@ class Program
         Console.WriteLine("-----------------------------------");
         foreach (var i in instrutores)
         {
-            Console.WriteLine($"Id: {i.Id} -> {i.Nome}, Materia: {i.Materia}, Desde: {i.Desde}");
+            Console.WriteLine($"Id: {i.Cpf} -> {i.Nome}, Materia: {i.Materia}, Desde: {i.Desde}");
         }
         Console.WriteLine("");
 
@@ -254,7 +254,7 @@ class Program
         Console.WriteLine("-----------------------------------");
         foreach (var a in alunos)
         {
-            Console.WriteLine($"Id: {a.Id} -> {a.Nome}, Idade: {a.Idade}, Matriculado em: {a.DataContrato}");
+            Console.WriteLine($"Id: {a.Cpf} -> {a.Nome}, Idade: {a.Idade}, Matriculado em: {a.DataContrato}");
         }
         Console.WriteLine("");
     }
