@@ -34,6 +34,10 @@ namespace projeto1.Data
         //Aula 9.02, 01/05/2023 Atributo Inverse Property
         public DbSet<Aeroporto>? Aeroportos { get; set; }
 
+        //Aula 9.03, 01/05/2023 Atributo NotMapped
+        public DbSet<Mapeada>? Mapeadas { get; set; }
+        public DbSet<NaoMapeada>? NaoMapeadas { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             const string strConn = "Server=(local); Database=C003; Encrypt=True; Integrated Security=True; Trust Server Certificate=true; pooling=true; MultipleActiveResultSets=True";
