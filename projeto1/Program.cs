@@ -39,7 +39,18 @@ class Program
         // ModeloTph();
 
         //Alex Canario, 16/04/2023, Aula 8.18, Bolsa de propriedades
-        PacoteDePropriedades();
+        // PacoteDePropriedades();
+
+        //01/05/2023, Aula 9.01 Atributos
+        Atributos();
+    }
+
+    private static void Atributos()
+    {
+        using var db = new ApplicationContext();
+        var script = db.Database.GenerateCreateScript();
+
+        Console.WriteLine(script);
     }
 
     private static void RecriaBanco(ApplicationContext db)

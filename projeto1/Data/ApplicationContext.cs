@@ -28,6 +28,9 @@ namespace projeto1.Data
         //Alex Canario, 16/04/2023, Aula 8.18, Bolsa de propriedades
         public DbSet<Dictionary<string, object>>? Configuracoes => Set<Dictionary<string, object>>("Configuracoes");
 
+        // Aula 9.01, 01/05/2023 Atributo Table
+        public DbSet<Atributo>? Atributos { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             const string strConn = "Server=(local); Database=C003; Encrypt=True; Integrated Security=True; Trust Server Certificate=true; pooling=true; MultipleActiveResultSets=True";
@@ -39,7 +42,7 @@ namespace projeto1.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AI");
+            modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AI");
 
             // modelBuilder.Entity<Departamento>().Property(p => p.Descricao).UseCollation("SQL_Latin1_General_CP1_CS_AS");
 
