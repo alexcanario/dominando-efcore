@@ -19,5 +19,11 @@ namespace projeto1.Domain
         [Required]
         [MaxLength(50)]
         public string? Observacao { get; set; }
+
+        public int Campo1 { get; set; }
+        public int Campo2 { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public int SomaCampo1Campo2 { get; set; }
     }
 }

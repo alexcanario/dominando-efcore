@@ -48,7 +48,20 @@ class Program
     private static void Atributos()
     {
         using var db = new ApplicationContext();
+
+        db.Database.EnsureDeleted();
+        db.Database.EnsureCreated();
+
         var script = db.Database.GenerateCreateScript();
+
+        var atributo = new Atributo
+        {
+            Descricao = "Exemplo atributo DatabaseGenerated Computed",
+            Campo1 = 1,
+            Campo2 = 2,
+            SomaCampo1Campo2 = 3 //Nao será persisrido, pois é computed
+            //Porém será lido no banco
+        };
 
         Console.WriteLine(script);
     }
