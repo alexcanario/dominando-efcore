@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace projeto1.Domain
 {
     [Table("TabelaAtributos")]
+    [Index(nameof(Descricao), IsUnique = true)]
+    [Index(nameof(Campo1), nameof(Campo2), IsUnique = true)]
+
     public class Atributo
     {
         [Key]
