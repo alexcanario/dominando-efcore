@@ -7,13 +7,14 @@ namespace projeto1.Domain
     [Table("TabelaAtributos")]
     [Index(nameof(Descricao), IsUnique = true)]
     [Index(nameof(Campo1), nameof(Campo2), IsUnique = true)]
-
+    [Comment("Comentário para minha tabela")]
     public class Atributo
     {
         [Key]
         public int iD { get; set; }
 
         [Column("MinhaDescricao", TypeName = "NVARCHAR(50)")]
+        [Comment("Comentário sobre o campo Descricao")]
         public string? Descricao { get; set; }
 
         [Required]
